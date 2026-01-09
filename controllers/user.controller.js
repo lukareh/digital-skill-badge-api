@@ -2,27 +2,28 @@ const UserModel = require('../models/user.model');
 
 class UserController {
   // get all users or filter by role
-  static getUsers(req, res) {
+  static async getUsers(req, res) {
     try {
       const { role } = req.query;
 
       if (role) {
-        const users = UserModel.getByRole(role);
+        const users = await UserModel.getByRole(role);
         return res.status(200).json(users);
       }
 
-      const users = UserModel.getAll();
+      const users = await UserModel.getAll();
       return res.status(200).json(users);
     } catch (error) {
+      console.error('error in getUsers:', error);
       return res.status(500).json({ error: 'internal server error' });
     }
   }
 
   // get user by id
-  static getUserById(req, res) {
+  static async getUserById(req, res) {
     try {
       const { id } = req.params;
-      const user = UserModel.getById(id);
+      const user = await UserModel.getById(id);
 
       if (!user) {
         return res.status(400).json({ error: 'user not found' });
@@ -30,12 +31,13 @@ class UserController {
 
       return res.status(200).json(user);
     } catch (error) {
+      console.error('error in getUserById:', error);
       return res.status(500).json({ error: 'internal server error' });
     }
   }
 
   // create a new user
-  static createUser(req, res) {
+  static async createUser(req, res) {
     try {
       const { name, email, role } = req.body;
 
@@ -47,9 +49,10 @@ class UserController {
         });
       }
 
-      const newUser = UserModel.create({ name, email, role });
+      const newUser = await UserModel.create({ name, email, role });
       return res.status(201).json(newUser);
     } catch (error) {
+      console.error('error in createUser:', error);
       return res.status(500).json({ error: 'internal server error' });
     }
   }

@@ -32,8 +32,7 @@ app.use((req, res, next) => {
   const originalJson = res.json.bind(res);
   res.json = function(data) {
     console.log('response status:', res.statusCode);
-    console.log('response body:', JSON.stringify(data));
-    return originalJson(data);
+    console.log('response body:', JSON.stringify(data));    return originalJson(data);
   };
   
   next();

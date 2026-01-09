@@ -1,0 +1,312 @@
+{
+  "info": {
+    "name": "Digital Skill Badge & Certification API",
+    "description": "REST API for managing digital skill badges and certifications",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "digital-skill-badge-api-collection",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["health"]
+            },
+            "description": "Check if the API is running"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["users"]
+            },
+            "description": "Retrieve all users from the system"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/users/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["users", "1"]
+            },
+            "description": "Get a specific user by their ID (route parameter)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Users by Role",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/users?role=learner",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "learner",
+                  "description": "Filter users by role (learner, admin, mentor)"
+                }
+              ]
+            },
+            "description": "Filter users by role using query parameter"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Users by Role - Admin",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/users?role=admin",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "admin"
+                }
+              ]
+            },
+            "description": "Get all admin users"
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Amit Patel\",\n  \"email\": \"amit@email.com\",\n  \"role\": \"learner\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["users"]
+            },
+            "description": "Create a new user with name, email, and optional role"
+          },
+          "response": []
+        },
+        {
+          "name": "Create User - Missing Fields (Error)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["users"]
+            },
+            "description": "Test validation - should return 400 error when email is missing"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Badges",
+      "item": [
+        {
+          "name": "Get All Badges",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/badges",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["badges"]
+            },
+            "description": "Retrieve all badges from the system"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Badges by Skill",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/badges?skill=ai",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["badges"],
+              "query": [
+                {
+                  "key": "skill",
+                  "value": "ai",
+                  "description": "Filter badges by skill (ai, nodejs, cloud, etc.)"
+                }
+              ]
+            },
+            "description": "Filter badges by skill using query parameter"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Badges by Skill - NodeJS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/badges?skill=nodejs",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["badges"],
+              "query": [
+                {
+                  "key": "skill",
+                  "value": "nodejs"
+                }
+              ]
+            },
+            "description": "Get all NodeJS badges"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Badge",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Backend Developer\",\n  \"skill\": \"nodejs\",\n  \"userId\": \"1\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/badges",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["badges"]
+            },
+            "description": "Create a new badge with title, skill, and userId"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Badge - Cloud Computing",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Cloud Computing Expert\",\n  \"skill\": \"aws\",\n  \"userId\": \"1\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/badges",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["badges"]
+            },
+            "description": "Create a cloud computing badge"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Badge - Missing Fields (Error)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Badge\",\n  \"skill\": \"testing\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/badges",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["badges"]
+            },
+            "description": "Test validation - should return 400 error when userId is missing"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
