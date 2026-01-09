@@ -56,6 +56,73 @@ class UserController {
       return res.status(500).json({ error: 'internal server error' });
     }
   }
+
+  // update user (put - full update)
+  static async updateUser(req, res) {
+    try {
+      const { id } = req.params;
+      const { name, email, role } = req.body;
+
+      // validation
+      if (!name || !email) {
+        return res.status(400).json({ 
+          error: 'missing required fields',
+          required: ['name', 'email']
+        });
+      }
+
+      const updatedUser = await UserModel.update(id, { name, email, role });
+      
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'user not found' });
+      }
+
+      return res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error('error in updateUser:', error);
+      return res.status(500).json({ error: 'internal server error' });
+    }
+  }
+
+  // partial update user (patch)
+  static async patchUser(req, res) {
+    try {
+      const { id } = req.params;
+      const updates = req.body;
+
+      if (Object.keys(updates).length === 0) {
+        return res.status(400).json({ error: 'no fields to update' });
+      }
+
+      const updatedUser = await UserModel.partialUpdate(id, updates);
+      
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'user not found' });
+      }
+
+      return res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error('error in patchUser:', error);
+      return res.status(500).json({ error: 'internal server error' });
+    }
+  }
+
+  // delete user
+  static async deleteUser(req, res) {
+    try {
+      const { id } = req.params;
+      const deletedUser = await UserModel.delete(id);
+      
+      if (!deletedUser) {
+        return res.status(404).json({ error: 'user not found' });
+      }
+
+      return res.status(200).json({ message: 'user deleted successfully', id: deletedUser.id });
+    } catch (error) {
+      console.error('error in deleteUser:', error);
+      return res.status(500).json({ error: 'internal server error' });
+    }
+  }
 }
 
 module.exports = UserController;

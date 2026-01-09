@@ -11,4 +11,13 @@ router.get('/:id', UserController.getUserById);
 // create a new user
 router.post('/', UserController.createUser);
 
+// update user (put - full update)
+router.put('/:id', UserController.updateUser);
+
+// partial update user (patch)
+router.patch('/:id', UserController.patchUser);
+
+// delete user
+router.delete('/:id', UserController.deleteUser);
+
 module.exports = router;

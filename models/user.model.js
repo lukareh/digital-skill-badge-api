@@ -30,6 +30,60 @@ class UserModel {
     return result.rows[0];
   }
 
+  // update user (put - full update)
+  static async update(id, userData) {
+    const { name, email, role } = userData;
+    const result = await pool.query(
+      'UPDATE users SET name = $1, email = $2, role = $3 WHERE id = $4 RETURNING id, name, email, role, created_at as "createdAt"',
+      [name, email, role || 'learner', id]
+    );
+    
+    return result.rows[0];
+  }
+
+  // partial update user (patch)
+  static async partialUpdate(id, userData) {
+    const updates = [];
+    const values = [];
+    let paramCount = 1;
+
+    if (userData.name !== undefined) {
+      updates.push(`name = $${paramCount}`);
+      values.push(userData.name);
+      paramCount++;
+    }
+    if (userData.email !== undefined) {
+      updates.push(`email = $${paramCount}`);
+      values.push(userData.email);
+      paramCount++;
+    }
+    if (userData.role !== undefined) {
+      updates.push(`role = $${paramCount}`);
+      values.push(userData.role);
+      paramCount++;
+    }
+
+    if (updates.length === 0) {
+      return null;
+    }
+
+    values.push(id);
+    const query = `UPDATE users SET ${updates.join(', ')} WHERE id = $${paramCount} RETURNING id, name, email, role, created_at as "createdAt"`;
+    const result = await pool.query(query, values);
+    
+    return result.rows[0];
+  }
+
+  // delete user
+  static async delete(id) {
+    const result = await pool.query(
+      'DELETE FROM users WHERE id = $1 RETURNING id',
+      [id]
+    );
+    
+    return result.rows[0];
+  }
+
   // clear all users (for testing purposes)
   static async clearAll() {
     await pool.query('DELETE FROM users');

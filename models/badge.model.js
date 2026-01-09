@@ -30,6 +30,60 @@ class BadgeModel {
     return result.rows[0];
   }
 
+  // update badge (put - full update)
+  static async update(id, badgeData) {
+    const { title, skill, userId } = badgeData;
+    const result = await pool.query(
+      'UPDATE badges SET title = $1, skill = $2, user_id = $3 WHERE id = $4 RETURNING id, title, skill, user_id as "userId", issued_at as "issuedAt"',
+      [title, skill, userId, id]
+    );
+    
+    return result.rows[0];
+  }
+
+  // partial update badge (patch)
+  static async partialUpdate(id, badgeData) {
+    const updates = [];
+    const values = [];
+    let paramCount = 1;
+
+    if (badgeData.title !== undefined) {
+      updates.push(`title = $${paramCount}`);
+      values.push(badgeData.title);
+      paramCount++;
+    }
+    if (badgeData.skill !== undefined) {
+      updates.push(`skill = $${paramCount}`);
+      values.push(badgeData.skill);
+      paramCount++;
+    }
+    if (badgeData.userId !== undefined) {
+      updates.push(`user_id = $${paramCount}`);
+      values.push(badgeData.userId);
+      paramCount++;
+    }
+
+    if (updates.length === 0) {
+      return null;
+    }
+
+    values.push(id);
+    const query = `UPDATE badges SET ${updates.join(', ')} WHERE id = $${paramCount} RETURNING id, title, skill, user_id as "userId", issued_at as "issuedAt"`;
+    const result = await pool.query(query, values);
+    
+    return result.rows[0];
+  }
+
+  // delete badge
+  static async delete(id) {
+    const result = await pool.query(
+      'DELETE FROM badges WHERE id = $1 RETURNING id',
+      [id]
+    );
+    
+    return result.rows[0];
+  }
+
   // clear all badges (for testing purposes)
   static async clearAll() {
     await pool.query('DELETE FROM badges');
